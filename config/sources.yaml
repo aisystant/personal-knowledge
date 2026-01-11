@@ -1,0 +1,37 @@
+sources:
+  club:
+    url: "https://club.systemschool.ru"
+    api_endpoint: "/api/v1/posts"
+    auth_token_env: "CLUB_API_TOKEN"
+    user_id: "tseren_tserenov"
+    import_types:
+      - posts
+      - comments
+
+  lms:
+    url: "https://lms.systemschool.ru"
+    api_endpoint: "/api/v1/reviews"
+    auth_token_env: "LMS_API_TOKEN"
+    user_id: "tseren_tserenov"
+    import_types:
+      - homework_reviews
+
+  external_repos:
+    - name: "ecosystem-development"
+      url: "https://github.com/aisystant/ecosystem-development"
+      branch: "main"
+      paths:
+        - "content/**/*.md"
+      exclude:
+        - "**/архив/**"
+
+chunk_settings:
+  max_chars: 10000
+  split_strategy: "semantic"  # разбивка по смыслу, не посередине предложения
+  frontmatter_required: true
+  exclude_from_embeddings:
+    markers:
+      start: "<!-- EMBEDDINGS_EXCLUDE_START -->"
+      end: "<!-- EMBEDDINGS_EXCLUDE_END -->"
+    sections:
+      - "История изменений"

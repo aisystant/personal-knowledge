@@ -1,0 +1,28 @@
+name: Sync External Repositories
+on:
+  schedule:
+    - cron: '0 4 * * *'  # Каждый день в 4:00
+  workflow_dispatch:      # Ручной запуск
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+      - name: Sync external repositories
+        run: |
+          chmod +x scripts/sync_external.sh
+          ./scripts/sync_external.sh
+      - name: Commit changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Auto-sync from external repositories" || echo "No changes"
+          git push
