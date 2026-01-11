@@ -1,0 +1,28 @@
+name: Import from Club
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Каждый день в 2:00
+  workflow_dispatch:      # Ручной запуск
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+      - name: Import from Club
+        env:
+          CLUB_API_TOKEN: ${{ secrets.CLUB_API_TOKEN }}
+        run: python scripts/import_from_club.py --from-date yesterday
+      - name: Commit changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Auto-import from Club" || echo "No changes"
+          git push

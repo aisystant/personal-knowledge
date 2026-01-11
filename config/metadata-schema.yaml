@@ -1,0 +1,25 @@
+metadata_schema:
+  required_fields:
+    - id
+    - source
+    - type
+    - created
+    - author
+    - char_count
+
+  optional_fields:
+    - updated
+    - tags
+    - related_chunks
+    - original_url
+    - context
+    - word_count
+
+  types:
+    - post
+    - comment
+    - homework-review
+    - note
+    - reflection
+    - project
+    - document
